@@ -14,6 +14,7 @@
 # limitations under the License.
 #
 import glob
+import multiprocessing
 
 from ie_serving.config import GLOBAL_CONFIG
 from ie_serving.logger import get_logger
@@ -54,5 +55,6 @@ class LocalModel(Model):
     @classmethod
     def get_engine_for_version(cls, model_name, version_attributes):
         engine_spec = cls._get_engine_spec(model_name, version_attributes)
-        engine = IrEngine.build(**engine_spec)
-        return engine
+        engine_process = multiprocessing.Process(target=IrEngine.build,
+                                                 args=engine_spec)
+        return engine_process

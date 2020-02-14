@@ -16,6 +16,7 @@
 import os
 import re
 from urllib.parse import urlparse, urlunparse
+import multiprocessing
 
 import boto3
 from botocore import UNSIGNED
@@ -132,13 +133,13 @@ class S3Model(Model):
         logger.info('Downloaded files from S3')
 
         engine_spec = cls._get_engine_spec(model_name, version_attributes)
-        engine = IrEngine.build(**engine_spec)
-
+        engine_process = multiprocessing.Process(target=IrEngine.build,
+                                                 args=engine_spec)
         cls.delete_local_mirror([version_attributes['xml_file'],
                                  version_attributes['bin_file'],
                                  version_attributes['mapping_config']])
         logger.info('Deleted temporary files')
-        return engine
+        return engine_process
 
     @classmethod
     def create_local_mirror(cls, version_attributes):
