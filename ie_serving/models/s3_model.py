@@ -133,8 +133,8 @@ class S3Model(Model):
 
         engine_spec = cls._get_engine_spec(model_name, version_attributes)
         engine_process = multiprocessing.Process(
-                            target=cls._start_engine_process_for_version,
-                            args=(version_attributes, engine_spec))
+            target=cls._start_engine_process_for_version,
+            args=(version_attributes, engine_spec))
         engine_process.start()
 
         return engine_process

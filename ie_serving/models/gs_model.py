@@ -15,7 +15,6 @@
 #
 from ie_serving.config import GLOBAL_CONFIG
 from ie_serving.logger import get_logger
-from ie_serving.models.ir_engine import IrEngine
 from ie_serving.models.model import Model
 import os
 import re
@@ -124,8 +123,9 @@ class GSModel(Model):
         logger.info('Downloaded files from GCS')
 
         engine_spec = cls._get_engine_spec(model_name, version_attributes)
-        engine_process = multiprocessing.Process(target=IrEngine.build,
-                                                 args=engine_spec)
+        engine_process = multiprocessing.Process(
+            target=cls._start_engine_process_for_version,
+            args=(version_attributes, engine_spec))
         engine_process.start()
 
         cls.delete_local_mirror([version_attributes['xml_file'],
