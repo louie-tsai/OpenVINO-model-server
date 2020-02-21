@@ -298,7 +298,6 @@ class Model(ABC):
         }
 
     @classmethod
-    @abstractmethod
     def _start_engine_process_for_version(
             cls, version_attributes, engine_spec):
         IrEngine.build(**engine_spec)
