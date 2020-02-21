@@ -52,9 +52,9 @@ def initialize_tf():
 
 def serve(models, max_workers: int=1, port: int=9000):
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=max_workers),
-                         options=[('grpc.max_send_message_length', GIGABYTE),
-                                  ('grpc.max_receive_message_length', GIGABYTE),
-                                  ('grpc.so_reuseport', 1),
+                         options=[('grpc.so_reuseport', 1),
+                                  ('grpc.max_send_message_length', GIGABYTE),
+                                  ('grpc.max_receive_message_length', GIGABYTE)
                                   ])
     prediction_service_pb2_grpc.add_PredictionServiceServicer_to_server(
         PredictionServiceServicer(models=models), server)

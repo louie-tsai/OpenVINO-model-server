@@ -152,11 +152,12 @@ def parse_one_model(args):
         process_thread.start()
 
     num_servers = int(os.getenv("NUM_SERVERS", 1))
+    server_processes_handlers = []
     for i in range(num_servers):
-        server = multiprocessing.Process(target=start_server,
-                                         args=(models, args.grpc_workers,
-                                               args.port))
-        server.start()
+        server_process_handler = multiprocessing.Process(
+            target=start_server, args=(models, args.grpc_workers, args.port))
+        server_process_handler.start()
+        server_processes_handlers.append(server_process_handler)
 
 
 def main():
