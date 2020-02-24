@@ -91,7 +91,5 @@ workflows:
     jobs:
       - unit_tests
       - style
-      - functional_tests_bin
-      - functional_tests_apt_ubuntu
       - functional_tests_clearlinux
       
